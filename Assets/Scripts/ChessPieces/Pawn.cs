@@ -23,13 +23,16 @@ public class Pawn : ChessPiece
                 {
                     for (int y = 0; y < tileCountY; y++)
                     {
-                        if (x != currentX && y != currentY + direction)
+                        if (x != currentX || y != currentY + direction)
                         {
                             if (board[x, y]?.type == ChessPieceType.Portal)
                             {
-                                if (board[x, y + direction] == null)
+                                if (y != 0 && y != tileCountY - 1)
                                 {
-                                    r.Add(new Vector2Int(x, y + direction));
+                                    if (board[x, y + direction] == null)
+                                    {
+                                        r.Add(new Vector2Int(x, y + direction));
+                                    }
                                 }
                             }
                         }
@@ -49,18 +52,122 @@ public class Pawn : ChessPiece
             {
                 r.Add(new Vector2Int(currentX, currentY + (direction * 2)));
             }
+            
+            //Portal
+            if (team == 0 && currentY == 1 && board[currentX, currentY + (direction * 2)] != null)
+            {
+                if (board[currentX, currentY + (direction * 2)].type == ChessPieceType.Portal)
+                {
+                    for (int x = 0; x < tileCountX; x++)
+                    {
+                        for (int y = 0; y < tileCountY; y++)
+                        {
+                            if (x != currentX || y != currentY + (direction * 2))
+                            {
+                                if (board[x, y]?.type == ChessPieceType.Portal)
+                                {
+                                    if (y != 0 && y != tileCountY - 1)
+                                    {
+                                        if (board[x, y + direction] == null)
+                                        {
+                                            r.Add(new Vector2Int(x, y + direction));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (team == 1 && currentY == 6 && board[currentX, currentY + (direction * 2)] != null)
+            {
+                if (board[currentX, currentY + (direction * 2)].type == ChessPieceType.Portal)
+                {
+                    for (int x = 0; x < tileCountX; x++)
+                    {
+                        for (int y = 0; y < tileCountY; y++)
+                        {
+                            if (x != currentX || y != currentY + (direction * 2))
+                            {
+                                if (board[x, y]?.type == ChessPieceType.Portal)
+                                {
+                                    if (y != 0 && y != tileCountY - 1)
+                                    {
+                                        if (board[x, y + direction] == null)
+                                        {
+                                            r.Add(new Vector2Int(x, y + direction));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // Kill move
         if (currentX != tileCountX - 1)
         {
-            if (board[currentX + 1, currentY + direction] != null && board[currentX + 1, currentY + direction].team != team)
+            if (board[currentX + 1, currentY + direction] != null && board[currentX + 1, currentY + direction].team != team && board[currentX + 1, currentY + direction].type  != ChessPieceType.Portal)
                 r.Add(new Vector2Int(currentX + 1, currentY + direction));
+            //Portal
+            if (board[currentX + 1, currentY + direction] != null && board[currentX + 1, currentY + direction].type == ChessPieceType.Portal)
+            {
+                for (int x = 0; x < tileCountX; x++)
+                {
+                    for (int y = 0; y < tileCountY; y++)
+                    {
+                        if (x != currentX + 1 || y != currentY + direction)
+                        {
+                            if (board[x, y]?.type == ChessPieceType.Portal)
+                            {
+                                if (y != 0 && y != tileCountY - 1)
+                                {
+                                    if (x != tileCountX - 1)
+                                    {
+                                        if (board[x + 1, y + direction] != null && board[x + 1, y + direction].team != team)
+                                        {
+                                            r.Add(new Vector2Int(x + 1, y + direction));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         if (currentX != 0)
         {
-            if (board[currentX - 1, currentY + direction] != null && board[currentX - 1, currentY + direction].team != team)
+            if (board[currentX - 1, currentY + direction] != null && board[currentX - 1, currentY + direction].team != team && board[currentX - 1, currentY + direction].type != ChessPieceType.Portal)
                 r.Add(new Vector2Int(currentX - 1, currentY + direction));
+            //Portal
+            if (board[currentX - 1, currentY + direction] != null && board[currentX - 1, currentY + direction].type == ChessPieceType.Portal)
+            {
+                for (int x = 0; x < tileCountX; x++)
+                {
+                    for (int y = 0; y < tileCountY; y++)
+                    {
+                        if (x != currentX - 1 || y != currentY + direction)
+                        {
+                            if (board[x, y]?.type == ChessPieceType.Portal)
+                            {
+                                if (y != 0 && y != tileCountY - 1)
+                                {
+                                    if (x != 0)
+                                    {
+                                        if (board[x - 1, y + direction] != null && board[x - 1, y + direction].team != team)
+                                        {
+                                            r.Add(new Vector2Int(x - 1, y + direction));
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         
