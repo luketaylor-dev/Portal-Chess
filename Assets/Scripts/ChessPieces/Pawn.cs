@@ -14,6 +14,30 @@ public class Pawn : ChessPiece
         if (board[currentX, currentY + direction] == null)
             r.Add(new Vector2Int(currentX, currentY + direction));
 
+        //Portal One in front
+        if (board[currentX, currentY + direction] != null)
+        {
+            if (board[currentX, currentY + direction].type == ChessPieceType.Portal)
+            {
+                for (int x = 0; x < tileCountX; x++)
+                {
+                    for (int y = 0; y < tileCountY; y++)
+                    {
+                        if (x != currentX && y != currentY + direction)
+                        {
+                            if (board[x, y]?.type == ChessPieceType.Portal)
+                            {
+                                if (board[x, y + direction] == null)
+                                {
+                                    r.Add(new Vector2Int(x, y + direction));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         //Two in front
         if (board[currentX, currentY + direction] == null)
         {
@@ -39,6 +63,8 @@ public class Pawn : ChessPiece
                 r.Add(new Vector2Int(currentX - 1, currentY + direction));
         }
 
+        
+
         return r;
     }
 
@@ -48,8 +74,6 @@ public class Pawn : ChessPiece
         if ((team == 0 && currentY == 6) || (team == 1 && currentY == 1))
             return SpecialMove.Promotion;
         
-
-
         // En Passant
         if (moveList.Count > 0)
         {
