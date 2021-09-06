@@ -108,7 +108,7 @@ public class Chessboard : MonoBehaviour
                         //get a list of where to go and highlight tiles
                         availableMoves = currentlyDragging.GetAvailableMoves(ref chessPieces, TILE_COUNT_X, TILE_COUNT_Y);
                         //Get a list of special moves
-                        specialMove = currentlyDragging.GetSpecialMoves(ref chessPieces, ref moveList, ref availableMoves);
+                        specialMove = currentlyDragging.GetSpecialMoves(ref chessPieces, ref moveList, ref availableMoves, TILE_COUNT_X, TILE_COUNT_Y);
 
                         PreventCheck();
 
@@ -124,8 +124,10 @@ public class Chessboard : MonoBehaviour
 
                 if (ContainsValidMove(ref availableMoves, new Vector2Int(hitPosition.x, hitPosition.y)))
                 {
-                    MoveTo(previousPosition.x, previousPosition.y,  hitPosition.x, hitPosition.y);
+                    MoveTo(previousPosition.x, previousPosition.y, hitPosition.x, hitPosition.y);
+                    var moved = chessPieces[hitPosition.x, hitPosition.y];
 
+                    CheckPromotion(moved);
                     // Net implementation
                     NetMakeMove mm = new NetMakeMove();
                     mm.originalX = previousPosition.x;
@@ -507,6 +509,20 @@ public class Chessboard : MonoBehaviour
             }
         }
     }
+    private void CheckPromotion(ChessPiece piece)
+    {
+        if (piece.type == ChessPieceType.Pawn)
+        {
+            if ((piece.team == 0 && piece.currentY == 7) || (piece.team == 1 && piece.currentY == 0))
+            {
+                ChessPiece newQueen = SpawnSinglePiece(ChessPieceType.Queen, piece.team);
+                newQueen.transform.position = chessPieces[piece.currentX, piece.currentY].transform.position;
+                Destroy(chessPieces[piece.currentX, piece.currentY].gameObject);
+                chessPieces[piece.currentX, piece.currentY] = newQueen;
+                PositionSinglePiece(piece.currentX, piece.currentY);
+            }
+        }
+    }
     private void PreventCheck()
     {
         ChessPiece targetKing = null;
@@ -815,9 +831,10 @@ public class Chessboard : MonoBehaviour
             ChessPiece target = chessPieces[mm.originalX, mm.originalY];
 
             availableMoves = target.GetAvailableMoves(ref chessPieces, TILE_COUNT_X, TILE_COUNT_Y);
-            specialMove = target.GetSpecialMoves(ref chessPieces, ref moveList, ref availableMoves);        
+            specialMove = target.GetSpecialMoves(ref chessPieces, ref moveList, ref availableMoves, TILE_COUNT_X, TILE_COUNT_Y);        
 
             MoveTo(mm.originalX, mm.originalY, mm.destinationX, mm.destinationY);
+            CheckPromotion(target);
         }
     }
     private void OnRematchClient(NetMessage msg)
