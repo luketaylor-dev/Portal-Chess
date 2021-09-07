@@ -219,35 +219,35 @@ public class Chessboard : MonoBehaviour
         byte whiteTeam = 0, blackTeam = 1;
 
         //White team
-        chessPieces[0, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
-        chessPieces[1, 0] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
-        chessPieces[2, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
-        chessPieces[3, 0] = SpawnSinglePiece(ChessPieceType.Queen, whiteTeam);
-        chessPieces[4, 0] = SpawnSinglePiece(ChessPieceType.King, whiteTeam);
-        chessPieces[5, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
-        chessPieces[6, 0] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
-        chessPieces[7, 0] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
-        chessPieces[4, 3] = SpawnSinglePiece(ChessPieceType.Portal, whiteTeam);
-        for (int i = 0; i < TILE_COUNT_X; i++)
-        {
-            chessPieces[i, 1] = SpawnSinglePiece(ChessPieceType.Pawn, whiteTeam);
-        }
+        chessPieces[1, 4] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
+        chessPieces[4, 5] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
+        //chessPieces[2, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
+        //chessPieces[3, 0] = SpawnSinglePiece(ChessPieceType.Queen, whiteTeam);
+        chessPieces[0, 2] = SpawnSinglePiece(ChessPieceType.King, whiteTeam);
+        //chessPieces[5, 0] = SpawnSinglePiece(ChessPieceType.Bishop, whiteTeam);
+        chessPieces[4, 4] = SpawnSinglePiece(ChessPieceType.Knight, whiteTeam);
+        chessPieces[3, 6] = SpawnSinglePiece(ChessPieceType.Rook, whiteTeam);
+        chessPieces[2, 4] = SpawnSinglePiece(ChessPieceType.Portal, whiteTeam);
+        //for (int i = 0; i < TILE_COUNT_X; i++)
+        //{
+        //    chessPieces[i, 1] = SpawnSinglePiece(ChessPieceType.Pawn, whiteTeam);
+        //}
 
         ////Black team
-        chessPieces[0, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
-        chessPieces[1, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
-        chessPieces[2, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
-        chessPieces[3, 7] = SpawnSinglePiece(ChessPieceType.Queen, blackTeam);
-        chessPieces[4, 7] = SpawnSinglePiece(ChessPieceType.King, blackTeam);
-        chessPieces[5, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
-        chessPieces[6, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
-        chessPieces[7, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
-        chessPieces[3, 4] = SpawnSinglePiece(ChessPieceType.Portal, blackTeam);
+        //chessPieces[0, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
+        //chessPieces[1, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
+        //chessPieces[2, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
+        //chessPieces[3, 7] = SpawnSinglePiece(ChessPieceType.Queen, blackTeam);
+        chessPieces[0, 7] = SpawnSinglePiece(ChessPieceType.King, blackTeam);
+        //chessPieces[5, 7] = SpawnSinglePiece(ChessPieceType.Bishop, blackTeam);
+        //chessPieces[6, 7] = SpawnSinglePiece(ChessPieceType.Knight, blackTeam);
+        //chessPieces[7, 7] = SpawnSinglePiece(ChessPieceType.Rook, blackTeam);
+        //chessPieces[3, 4] = SpawnSinglePiece(ChessPieceType.Portal, blackTeam);
 
-        for (int i = 0; i < TILE_COUNT_X; i++)
-        {
-            chessPieces[i, 6] = SpawnSinglePiece(ChessPieceType.Pawn, blackTeam);
-        }
+        //for (int i = 0; i < TILE_COUNT_X; i++)
+        //{
+        //    chessPieces[i, 6] = SpawnSinglePiece(ChessPieceType.Pawn, blackTeam);
+        //}
 
     }
     private ChessPiece SpawnSinglePiece(ChessPieceType type, byte team)
@@ -660,6 +660,21 @@ public class Chessboard : MonoBehaviour
 
             return true; //Checkmate
         }
+        var defMoves = false;
+
+        for (int i = 0; i < defendingPiece.Count; i++)
+        {
+            var defendingMoves = defendingPiece[i].GetAvailableMoves(ref chessPieces, TILE_COUNT_X, TILE_COUNT_Y);
+            SimulateMoveForSinglePiece(defendingPiece[i], ref defendingMoves, targetKing);
+            if (defendingMoves.Count != 0)
+            {
+                defMoves = true;
+                break;
+            }
+                
+        }
+        if (!defMoves)
+            return true;
 
         return false;
     }
