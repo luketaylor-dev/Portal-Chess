@@ -3370,6 +3370,7 @@ MonoBehaviour:
   - {fileID: 1028868664329696, guid: 1c0f2faf14460a5478057fd4e0575576, type: 3}
   - {fileID: 1945632463053948, guid: be3573ba2ba53ea4f8979e64874c493d, type: 3}
   - {fileID: 1389686872840900, guid: 27d2608cb94ae2d44811af52793c3562, type: 3}
+  - {fileID: 1255069297795576402, guid: 82600676f7143e543b6cfbc1584e16eb, type: 3}
   blackPrefabs:
   - {fileID: 3307910824787562398, guid: e2584a616eebccc4181aacb0e4889b52, type: 3}
   - {fileID: 18016620775170909, guid: ddf48d131b5cc954bbbe2a0d4516e79c, type: 3}
@@ -3377,6 +3378,7 @@ MonoBehaviour:
   - {fileID: 1014140188548210130, guid: 8e7db01002b092c40b52d84c13df84ba, type: 3}
   - {fileID: 3797626813656117947, guid: 2dbf615730748a740816485e792cac4a, type: 3}
   - {fileID: 6005940265543735926, guid: 358062f948270994b823a018badc3547, type: 3}
+  - {fileID: 1418252949409520928, guid: 1ceec2f3ed2f3194183b195449259817, type: 3}
 --- !u!1 &1163009709
 GameObject:
   m_ObjectHideFlags: 0
