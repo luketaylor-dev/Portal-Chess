@@ -10,7 +10,8 @@ public enum ChessPieceType
     Knight = 3,
     Bishop = 4,
     Queen = 5,
-    King = 6
+    King = 6,
+    Portal = 7
 }
 
 public class ChessPiece : MonoBehaviour
@@ -46,7 +47,7 @@ public class ChessPiece : MonoBehaviour
         return r;
     }
 
-    public virtual SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> moveList, ref List<Vector2Int> availableMoves)
+    public virtual SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> moveList, ref List<Vector2Int> availableMoves, int tileCountX, int tileCountY)
     {
         return SpecialMove.none;
     }
