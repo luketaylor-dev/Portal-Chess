@@ -9,6 +9,7 @@ public class NetRematch : NetMessage
     {
         Code = OpCode.REMATCH;
     }
+
     public NetRematch(DataStreamReader reader) // recieve box
     {
         Code = OpCode.REMATCH;
@@ -17,10 +18,11 @@ public class NetRematch : NetMessage
 
     public override void Serialize(ref DataStreamWriter writer)
     {
-        writer.WriteByte((byte)Code);
+        writer.WriteByte((byte) Code);
         writer.WriteInt(teamId);
         writer.WriteByte(wantRematch);
     }
+
     public override void Deserialize(DataStreamReader reader)
     {
         teamId = reader.ReadInt();
@@ -31,6 +33,7 @@ public class NetRematch : NetMessage
     {
         NetUtility.C_REMATCH?.Invoke(this);
     }
+
     public override void RecievedOnServer(NetworkConnection cnn)
     {
         NetUtility.S_REMATCH?.Invoke(this, cnn);
