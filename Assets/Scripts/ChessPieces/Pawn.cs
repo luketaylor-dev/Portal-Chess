@@ -127,7 +127,7 @@ public class Pawn : ChessPiece
                                     {
                                         if (x != tileCountX - 1)
                                         {
-                                            if (board[x + 1, y + direction] != null && board[x + 1, y + direction].team != team)
+                                            if (board[x + 1, y + direction] != null && board[x + 1, y + direction].team != team && board[x + 1, y + direction].type != ChessPieceType.Portal)
                                             {
                                                 r.Add(new Vector2Int(x + 1, y + direction));
                                             }
@@ -158,7 +158,7 @@ public class Pawn : ChessPiece
                                     {
                                         if (x != 0)
                                         {
-                                            if (board[x - 1, y + direction] != null && board[x - 1, y + direction].team != team)
+                                            if (board[x - 1, y + direction] != null && board[x - 1, y + direction].team != team && board[x - 1, y + direction].type != ChessPieceType.Portal)
                                             {
                                                 r.Add(new Vector2Int(x - 1, y + direction));
                                             }
