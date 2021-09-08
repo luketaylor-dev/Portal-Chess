@@ -40,8 +40,13 @@ public class Rook : ChessPiece
                                                 if (board[x, newY].team != team)
                                                 {
                                                     r.Add(new Vector2Int(x, newY));
-                                                    goto DownLoopEnd; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
+                                                    goto LoopBreak; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
                                                 }
+                                                else
+                                                {
+                                                    goto LoopBreak;
+                                                }
+
                                             }
                                         }
                                     }
@@ -50,7 +55,7 @@ public class Rook : ChessPiece
                         }
                     }
                 }
-            DownLoopEnd:
+            LoopBreak:
                 break;
             }
         }
@@ -87,7 +92,11 @@ public class Rook : ChessPiece
                                                 if (board[x, newY].team != team)
                                                 {
                                                     r.Add(new Vector2Int(x, newY));
-                                                    goto UpLoopEnd; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
+                                                    goto LoopBreak; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
+                                                }
+                                                else
+                                                {
+                                                    goto LoopBreak;
                                                 }
                                             }
                                         }
@@ -97,7 +106,7 @@ public class Rook : ChessPiece
                         }
                     }
                 }
-            UpLoopEnd:
+            LoopBreak:
                 break;
             }
         }
@@ -134,7 +143,11 @@ public class Rook : ChessPiece
                                                 if (board[newX, y].team != team)
                                                 {
                                                     r.Add(new Vector2Int(newX, y));
-                                                    goto LeftLoopEnd; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
+                                                    goto LoopBreak; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
+                                                }
+                                                else
+                                                {
+                                                    goto LoopBreak;
                                                 }
                                             }
                                         }
@@ -144,7 +157,7 @@ public class Rook : ChessPiece
                         }
                     }
                 }
-            LeftLoopEnd:
+            LoopBreak:
                 break;
             }
         }
@@ -181,7 +194,11 @@ public class Rook : ChessPiece
                                                 if (board[newX, y].team != team)
                                                 {
                                                     r.Add(new Vector2Int(newX, y));
-                                                    goto RightLoopEnd; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
+                                                    goto LoopBreak; //if we hit an enemy we can stop, but we need to leave a few loops so just forcing the exit
+                                                }
+                                                else
+                                                {
+                                                    goto LoopBreak;
                                                 }
                                             }
                                         }
@@ -191,7 +208,7 @@ public class Rook : ChessPiece
                         }
                     }
                 }
-                RightLoopEnd:
+            LoopBreak:
                 break;
             }
         }
