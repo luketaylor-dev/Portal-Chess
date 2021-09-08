@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -26,7 +25,7 @@ public class ChessPiece : MonoBehaviour
 
     private void Start()
     {
-        transform.rotation = Quaternion.Euler((team == 0) ? Vector3.zero : new Vector3(0, 180, 0));
+        transform.rotation = Quaternion.Euler(team == 0 ? Vector3.zero : new Vector3(0, 180, 0));
     }
 
     private void Update()
@@ -37,7 +36,7 @@ public class ChessPiece : MonoBehaviour
 
     public virtual List<Vector2Int> GetAvailableMoves(ref ChessPiece[,] board, int tileCountX, int tileCountY)
     {
-        List<Vector2Int> r = new List<Vector2Int>();
+        var r = new List<Vector2Int>();
 
         r.Add(new Vector2Int(3, 3));
         r.Add(new Vector2Int(3, 4));
@@ -47,7 +46,8 @@ public class ChessPiece : MonoBehaviour
         return r;
     }
 
-    public virtual SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> moveList, ref List<Vector2Int> availableMoves, int tileCountX, int tileCountY)
+    public virtual SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> moveList,
+        ref List<Vector2Int> availableMoves, int tileCountX, int tileCountY)
     {
         return SpecialMove.none;
     }
@@ -58,6 +58,7 @@ public class ChessPiece : MonoBehaviour
         if (force)
             transform.position = desiredPosition;
     }
+
     public virtual void SetScale(Vector3 scale, bool force = false)
     {
         desiredScale = scale;

@@ -1,33 +1,37 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Collections;
 using Unity.Networking.Transport;
 using UnityEngine;
+
 public class Client : MonoBehaviour
 {
-    #region singleton implementation
-    public static Client Instance { get; set; }
-    //public object NetUtility { get; private set; }
-
-    private void Awake()
-    {
-        Instance = this;
-    }
-    #endregion
-
-    public NetworkDriver driver;
     private NetworkConnection connection;
 
-    private bool isActive = false;
-
     public Action connectionDropped;
+
+    public NetworkDriver driver;
+
+    private bool isActive;
+
+    public void Update()
+    {
+        if (!isActive)
+            return;
+
+        driver.ScheduleUpdate().Complete();
+        CheckAlive();
+        UpdateMessagePump();
+    }
+
+    public void OnDestroy()
+    {
+        Shutdown();
+    }
 
     //Methods
     public void Init(string ip, ushort port)
     {
         driver = NetworkDriver.Create();
-        NetworkEndPoint endpoint = NetworkEndPoint.Parse(ip, port);
+        var endpoint = NetworkEndPoint.Parse(ip, port);
 
         connection = driver.Connect(endpoint);
 
@@ -37,6 +41,7 @@ public class Client : MonoBehaviour
 
         RegisterToEvent();
     }
+
     public void Shutdown()
     {
         if (isActive)
@@ -44,21 +49,8 @@ public class Client : MonoBehaviour
             UnregisterToEvent();
             driver.Dispose();
             isActive = false;
-            connection = default(NetworkConnection);
+            connection = default;
         }
-    }
-    public void OnDestroy()
-    {
-        Shutdown();
-    }
-    public void Update()
-    {
-        if (!isActive)
-            return;
-
-        driver.ScheduleUpdate().Complete();
-        CheckAlive();
-        UpdateMessagePump();
     }
 
     private void CheckAlive()
@@ -82,19 +74,19 @@ public class Client : MonoBehaviour
                 SendToServer(new NetWelcome());
                 Debug.Log("We're connected :D");
             }
+
             if (cmd == NetworkEvent.Type.Data)
             {
-                NetUtility.OnData(stream, default(NetworkConnection));
+                NetUtility.OnData(stream, default);
             }
             else if (cmd == NetworkEvent.Type.Disconnect)
             {
                 Debug.Log("Client got disconnected from server");
-                connection = default(NetworkConnection);
+                connection = default;
                 connectionDropped?.Invoke();
                 Shutdown();
             }
         }
-
     }
 
     public void SendToServer(NetMessage msg)
@@ -109,12 +101,26 @@ public class Client : MonoBehaviour
     {
         NetUtility.C_KEEP_ALIVE += OnKeepAlive;
     }
+
     private void UnregisterToEvent()
     {
         NetUtility.C_KEEP_ALIVE -= OnKeepAlive;
     }
+
     private void OnKeepAlive(NetMessage nm)
     {
         SendToServer(nm);
     }
+
+    #region singleton implementation
+
+    public static Client Instance { get; set; }
+    //public object NetUtility { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    #endregion
 }
