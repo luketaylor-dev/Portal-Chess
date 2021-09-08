@@ -28,17 +28,23 @@ public class Knight : ChessPiece
                             {
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
-                                    //up then right
-                                    if (board[px + 1, py] == null)
-                                        r.Add(new Vector2Int(px + 1, py));
-                                    else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px + 1, py));
+                                    if (px + 1 < tileCountX)
+                                    {
+                                        //up then right
+                                        if (board[px + 1, py] == null)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                        else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                    }
 
-                                    //right then up
-                                    if (board[px, py + 1] == null)
-                                        r.Add(new Vector2Int(px, py + 1));
-                                    else if (board[px, py + 1].team != team && board[px, py +1].type != ChessPieceType.Portal)
-                                        r.Add(new Vector2Int(px, py + 1));
+                                    if (py + 1 < tileCountY)
+                                    {
+                                        //right then up
+                                        if (board[px, py + 1] == null)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                        else if (board[px, py + 1].team != team && board[px, py + 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                    }
                                 }
                             }
                         }
@@ -65,16 +71,21 @@ public class Knight : ChessPiece
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
                                     //up then right
-                                    if (board[px + 1, py] == null)
-                                        r.Add(new Vector2Int(px + 1, py));
-                                    else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px + 1, py));
-
+                                    if (px + 1 < tileCountX)
+                                    {
+                                        if (board[px + 1, py] == null)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                        else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                    }
                                     //right then up
-                                    if (board[px, py + 1] == null)
-                                        r.Add(new Vector2Int(px, py + 1));
-                                    else if (board[px, py + 1].team != team && board[px, py + 1].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px, py + 1));
+                                    if (py + 1 < tileCountY)
+                                    {
+                                        if (board[px, py + 1] == null)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                        else if (board[px, py + 1].team != team && board[px, py + 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                    }
                                 }
                             }
                         }
@@ -102,17 +113,22 @@ public class Knight : ChessPiece
                             {
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
-                                    //up then left
-                                    if (board[px - 1, py] == null)
-                                        r.Add(new Vector2Int(px - 1, py));
-                                    else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px - 1, py));
-
-                                    //left then up
-                                    if (board[px, py + 1] == null)
-                                        r.Add(new Vector2Int(px, py + 1));
-                                    else if (board[px, py + 1].team != team && board[px, py + 1].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px, py + 1));
+                                    if (px - 1 >= 0)
+                                    {
+                                        //up then left
+                                        if (board[px - 1, py] == null)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                        else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                    }
+                                    if (py + 1 < tileCountY)
+                                    {
+                                        //left then up
+                                        if (board[px, py + 1] == null)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                        else if (board[px, py + 1].team != team && board[px, py + 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                    }
                                 }
                             }
                         }
@@ -140,16 +156,21 @@ public class Knight : ChessPiece
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
                                     //up then left
-                                    if (board[px - 1, py] == null)
-                                        r.Add(new Vector2Int(px - 1, py));
-                                    else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px - 1, py));
-
+                                    if (px - 1 >= 0)
+                                    {
+                                        if (board[px - 1, py] == null)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                        else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                    }
                                     //left then up
-                                    if (board[px, py + 1] == null)
-                                        r.Add(new Vector2Int(px, py + 1));
-                                    else if (board[px, py + 1].team != team && board[px, py + 1].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px, py + 1));
+                                    if (py + 1 < tileCountY)
+                                    {
+                                        if (board[px, py + 1] == null)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                        else if (board[px, py + 1].team != team && board[px, py + 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py + 1));
+                                    }
                                 }
                             }
                         }
@@ -177,16 +198,21 @@ public class Knight : ChessPiece
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
                                     //down then right
-                                    if (board[px + 1, py] == null)
-                                        r.Add(new Vector2Int(px + 1, py));
-                                    else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px + 1, py));
-
+                                    if (px + 1 < tileCountX)
+                                    {
+                                        if (board[px + 1, py] == null)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                        else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                    }
                                     //right then up
-                                    if (board[px, py - 1] == null)
-                                        r.Add(new Vector2Int(px, py - 1));
-                                    else if (board[px, py - 1].team != team && board[px, py - 1].type != ChessPieceType.Portal)
-                                        r.Add(new Vector2Int(px, py - 1));
+                                    if (py - 1 >= 0)
+                                    {
+                                        if (board[px, py - 1] == null)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                        else if (board[px, py - 1].team != team && board[px, py - 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                    }
                                 }
                             }
                         }
@@ -213,16 +239,21 @@ public class Knight : ChessPiece
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
                                     //down then right
-                                    if (board[px + 1, py] == null)
-                                        r.Add(new Vector2Int(px + 1, py));
-                                    else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px + 1, py));
-
+                                    if (px + 1 < tileCountX)
+                                    {
+                                        if (board[px + 1, py] == null)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                        else if (board[px + 1, py].team != team && board[px + 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px + 1, py));
+                                    }
                                     //right then up
-                                    if (board[px, py - 1] == null)
-                                        r.Add(new Vector2Int(px, py - 1));
-                                    else if (board[px, py - 1].team != team && board[px, py - 1].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px, py - 1));
+                                    if (py - 1 >= 0)
+                                    {
+                                        if (board[px, py - 1] == null)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                        else if (board[px, py - 1].team != team && board[px, py - 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                    }
                                 }
                             }
                         }
@@ -250,16 +281,21 @@ public class Knight : ChessPiece
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
                                     //down then left
-                                    if (board[px - 1, py] == null)
-                                        r.Add(new Vector2Int(px - 1, py));
-                                    else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px - 1, py));
-
+                                    if (px - 1 >= 0)
+                                    {
+                                        if (board[px - 1, py] == null)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                        else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                    }
                                     //left then up
-                                    if (board[px, py - 1] == null)
-                                        r.Add(new Vector2Int(px, py - 1));
-                                    else if (board[px, py - 1].team != team  && board[px, py -1].type != ChessPieceType.Portal)
-                                        r.Add(new Vector2Int(px, py - 1));
+                                    if (py - 1 >= 0)
+                                    {
+                                        if (board[px, py - 1] == null)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                        else if (board[px, py - 1].team != team && board[px, py - 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                    }
                                 }
                             }
                         }
@@ -286,16 +322,21 @@ public class Knight : ChessPiece
                                 if (board[px, py].type == ChessPieceType.Portal)
                                 {
                                     //down then left
-                                    if (board[px - 1, py] == null)
-                                        r.Add(new Vector2Int(px - 1, py));
-                                    else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px - 1, py));
-
+                                    if (px - 1 >= 0)
+                                    {
+                                        if (board[px - 1, py] == null)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                        else if (board[px - 1, py].team != team && board[px - 1, py].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px - 1, py));
+                                    }
                                     //left then up
-                                    if (board[px, py - 1] == null)
-                                        r.Add(new Vector2Int(px, py - 1));
-                                    else if (board[px, py - 1].team != team && board[px, py - 1].type != ChessPieceType.Portal )
-                                        r.Add(new Vector2Int(px, py - 1));
+                                    if (py - 1 >= 0)
+                                    {
+                                        if (board[px, py - 1] == null)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                        else if (board[px, py - 1].team != team && board[px, py - 1].type != ChessPieceType.Portal)
+                                            r.Add(new Vector2Int(px, py - 1));
+                                    }
                                 }
                             }
                         }

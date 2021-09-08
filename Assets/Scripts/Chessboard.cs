@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using Unity.Networking.Transport;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +48,8 @@ public class Chessboard : MonoBehaviour
     private bool isWhiteTurn;
     private SpecialMove specialMove;
     private List<Vector2Int[]> moveList = new List<Vector2Int[]>();
+    private int logNumber = 0;
+    private string fileName = Directory.GetCurrentDirectory() + "\\log.txt";
 
     //  multiplayer logic
     private int playerCount = -1;
@@ -60,11 +63,11 @@ public class Chessboard : MonoBehaviour
 
         GenerateAllTiles(tileSize, TILE_COUNT_X, TILE_COUNT_Y);
         SpawnAllPieces();
+        CreateGameLog();
         PositionAllPieces();
-
-
         RegisterEvents();
     }
+
     private void Update()
     {
         if (!currentCamera)
@@ -386,6 +389,9 @@ public class Chessboard : MonoBehaviour
         SpawnAllPieces();
         PositionAllPieces();
         isWhiteTurn = true;
+        //Not create a file
+        logNumber++;
+        CreateGameLog();
     }
     public void OnMenuButton()
     {
@@ -758,6 +764,39 @@ public class Chessboard : MonoBehaviour
         return false;
     }
 
+
+    private void CreateGameLog()
+    {
+        var foundName = false;
+        while (!foundName)
+        {
+            if(logNumber > 100)
+            {
+                foundName = true;
+            }
+            if (File.Exists(fileName))
+            {
+                if (logNumber == 0)
+                    fileName = fileName.Replace("log", $"log({logNumber + 1})");
+                else
+                    fileName = fileName.Replace(logNumber.ToString(), (logNumber + 1).ToString());
+                logNumber++;
+            }
+            else
+            {
+                File.Create(fileName);
+                foundName = true;
+            }
+        }
+    }
+    private void AddToLog(string logMessage)
+    {
+        using (StreamWriter w = File.AppendText(fileName))
+        {
+            w.WriteLine(logMessage);
+        }
+    }
+
     #region
     private void RegisterEvents()
     {
@@ -840,9 +879,10 @@ public class Chessboard : MonoBehaviour
         NetMakeMove mm = msg as NetMakeMove;
 
         Debug.Log($"MM : {mm.teamId} :  {mm.originalX} {mm.originalY} -> {mm.destinationX} {mm.destinationY}");
-
-        if(mm.teamId != currentTeam)
+        
+        if (mm.teamId != currentTeam)
         {
+            AddToLog($"MM : {mm.teamId} : {chessPieces[mm.originalX, mm.originalY].type.ToString()[0]} {mm.originalX} {mm.originalY} -> {mm.destinationX} {mm.destinationY}");
             ChessPiece target = chessPieces[mm.originalX, mm.originalY];
 
             availableMoves = target.GetAvailableMoves(ref chessPieces, TILE_COUNT_X, TILE_COUNT_Y);
@@ -850,6 +890,10 @@ public class Chessboard : MonoBehaviour
 
             MoveTo(mm.originalX, mm.originalY, mm.destinationX, mm.destinationY);
             CheckPromotion(target);
+        }
+        else
+        {
+            AddToLog($"MM : {mm.teamId} : {chessPieces[mm.destinationX, mm.destinationY].type.ToString()[0]} {mm.originalX} {mm.originalY} -> {mm.destinationX} {mm.destinationY}");
         }
     }
     private void OnRematchClient(NetMessage msg)
