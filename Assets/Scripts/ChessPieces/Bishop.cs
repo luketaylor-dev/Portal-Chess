@@ -38,6 +38,10 @@ public class Bishop : ChessPiece
                                                 r.Add(new Vector2Int(nx, ny));
                                                 goto LoopBreak;
                                             }
+                                            else
+                                            {
+                                                goto LoopBreak;
+                                            }
                                         }
                                     }
                                 }
@@ -78,6 +82,10 @@ public class Bishop : ChessPiece
                                             if (board[nx, ny].type != ChessPieceType.Portal && board[nx, ny].team != team)
                                             {
                                                 r.Add(new Vector2Int(nx, ny));
+                                                goto LoopBreak;
+                                            }
+                                            else
+                                            {
                                                 goto LoopBreak;
                                             }
                                         }
@@ -122,6 +130,10 @@ public class Bishop : ChessPiece
                                                 r.Add(new Vector2Int(nx, ny));
                                                 goto LoopBreak;
                                             }
+                                            else
+                                            {
+                                                goto LoopBreak;
+                                            }
                                         }
                                     }
                                 }
@@ -162,6 +174,10 @@ public class Bishop : ChessPiece
                                             if (board[nx, ny].type != ChessPieceType.Portal && board[nx, ny].team != team)
                                             {
                                                 r.Add(new Vector2Int(nx, ny));
+                                                goto LoopBreak;
+                                            }
+                                            else
+                                            {
                                                 goto LoopBreak;
                                             }
                                         }
