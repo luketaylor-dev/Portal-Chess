@@ -266,9 +266,7 @@ public class Queen : ChessPiece
                                     else
                                     {
                                         if (board[nx, ny].type != ChessPieceType.Portal && board[nx, ny].team != team)
-                                        {
                                             r.Add(new Vector2Int(nx, ny));
-                                        }
 
                                         goto LoopBreak;
                                     }

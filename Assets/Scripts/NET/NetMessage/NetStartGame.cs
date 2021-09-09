@@ -4,22 +4,22 @@ public class NetStartGame : NetMessage
 {
     public NetStartGame()
     {
-        Code = OpCode.START_GAME;
+        Code = OpCode.StartGame;
     }
 
     public NetStartGame(DataStreamReader reader)
     {
-        Code = OpCode.START_GAME;
+        Code = OpCode.StartGame;
         Deserialize(reader);
     }
 
     public override void RecievedOnClient()
     {
-        NetUtility.C_START_GAME?.Invoke(this);
+        NetUtility.CStartGame?.Invoke(this);
     }
 
     public override void RecievedOnServer(NetworkConnection cnn)
     {
-        NetUtility.S_START_GAME?.Invoke(this, cnn);
+        NetUtility.SStartGame?.Invoke(this, cnn);
     }
 }

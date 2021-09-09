@@ -5,24 +5,24 @@ using UnityEngine;
 
 public class Server : MonoBehaviour
 {
-    private const float keepAliveTickRate = 20.0f;
+    private const float KeepAliveTickRate = 20.0f;
 
-    public Action connectionDropped;
-    private NativeList<NetworkConnection> connections;
+    public Action ConnectionDropped;
+    private NativeList<NetworkConnection> _connections;
 
-    public NetworkDriver driver;
+    public NetworkDriver Driver;
 
-    private bool isActive;
-    private float lastKeepAlive;
+    private bool _isActive;
+    private float _lastKeepAlive;
 
     public void Update()
     {
-        if (!isActive)
+        if (!_isActive)
             return;
 
         KeepAlive();
 
-        driver.ScheduleUpdate().Complete();
+        Driver.ScheduleUpdate().Complete();
         CleanupConnections();
         AcceptNewConnections();
         UpdateMessagePump();
@@ -36,48 +36,48 @@ public class Server : MonoBehaviour
     //Methods
     public void Init(ushort port)
     {
-        driver = NetworkDriver.Create();
+        Driver = NetworkDriver.Create();
         var endpoint = NetworkEndPoint.AnyIpv4;
         endpoint.Port = port;
 
-        if (driver.Bind(endpoint) != 0)
+        if (Driver.Bind(endpoint) != 0)
         {
             Debug.Log("Unable to bind on port " + endpoint.Port);
             return;
         }
 
-        driver.Listen();
+        Driver.Listen();
         Debug.Log("Currently listening on port " + endpoint.Port);
 
-        connections = new NativeList<NetworkConnection>(2, Allocator.Persistent);
-        isActive = true;
+        _connections = new NativeList<NetworkConnection>(2, Allocator.Persistent);
+        _isActive = true;
     }
 
     public void Shutdown()
     {
-        if (isActive)
+        if (_isActive)
         {
-            driver.Dispose();
-            connections.Dispose();
-            isActive = false;
+            Driver.Dispose();
+            _connections.Dispose();
+            _isActive = false;
         }
     }
 
     private void KeepAlive()
     {
-        if (Time.time - lastKeepAlive > keepAliveTickRate)
+        if (Time.time - _lastKeepAlive > KeepAliveTickRate)
         {
-            lastKeepAlive = Time.time;
+            _lastKeepAlive = Time.time;
             Broadcast(new NetKeepAlive());
         }
     }
 
     private void CleanupConnections()
     {
-        for (var i = 0; i < connections.Length; i++)
-            if (!connections[i].IsCreated)
+        for (var i = 0; i < _connections.Length; i++)
+            if (!_connections[i].IsCreated)
             {
-                connections.RemoveAtSwapBack(i);
+                _connections.RemoveAtSwapBack(i);
                 --i;
             }
     }
@@ -85,25 +85,25 @@ public class Server : MonoBehaviour
     private void AcceptNewConnections()
     {
         NetworkConnection c;
-        while ((c = driver.Accept()) != default) connections.Add(c);
+        while ((c = Driver.Accept()) != default) _connections.Add(c);
     }
 
     private void UpdateMessagePump()
     {
         DataStreamReader stream;
-        for (var i = 0; i < connections.Length; i++)
+        for (var i = 0; i < _connections.Length; i++)
         {
             NetworkEvent.Type cmd;
-            while ((cmd = driver.PopEventForConnection(connections[i], out stream)) != NetworkEvent.Type.Empty)
+            while ((cmd = Driver.PopEventForConnection(_connections[i], out stream)) != NetworkEvent.Type.Empty)
                 if (cmd == NetworkEvent.Type.Data)
                 {
-                    NetUtility.OnData(stream, connections[i], this);
+                    NetUtility.OnData(stream, _connections[i], this);
                 }
                 else if (cmd == NetworkEvent.Type.Disconnect)
                 {
                     Debug.Log("Client disconnected from server");
-                    connections[i] = default;
-                    connectionDropped?.Invoke();
+                    _connections[i] = default;
+                    ConnectionDropped?.Invoke();
                     Shutdown(); //only needed because 2 person game
                 }
         }
@@ -113,17 +113,17 @@ public class Server : MonoBehaviour
     public void SendToClient(NetworkConnection connection, NetMessage msg)
     {
         DataStreamWriter writer;
-        driver.BeginSend(connection, out writer);
+        Driver.BeginSend(connection, out writer);
         msg.Serialize(ref writer);
-        driver.EndSend(writer);
+        Driver.EndSend(writer);
     }
 
     public void Broadcast(NetMessage msg)
     {
-        for (var i = 0; i < connections.Length; i++)
-            if (connections[i].IsCreated)
+        for (var i = 0; i < _connections.Length; i++)
+            if (_connections[i].IsCreated)
                 //Debug.Log($"Sending {msg.Code} to : {connections[i].InternalId}");
-                SendToClient(connections[i], msg);
+                SendToClient(_connections[i], msg);
     }
 
     #region singleton implementation

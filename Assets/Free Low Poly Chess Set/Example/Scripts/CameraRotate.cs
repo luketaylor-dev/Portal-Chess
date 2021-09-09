@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraRotate : MonoBehaviour
 {
-    public float Speed = 8;
+    [FormerlySerializedAs("Speed")] public float speed = 8;
 
     // Update is called once per frame
     private void FixedUpdate()
     {
-        transform.Rotate(Vector3.up, Speed * Time.deltaTime, Space.World);
+        transform.Rotate(Vector3.up, speed * Time.deltaTime, Space.World);
     }
 }

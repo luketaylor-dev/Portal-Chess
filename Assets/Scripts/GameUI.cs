@@ -4,9 +4,9 @@ using UnityEngine;
 
 public enum CameraAngle
 {
-    menu = 0,
-    whiteTeam = 1,
-    blackTeam = 2
+    Menu = 0,
+    WhiteTeam = 1,
+    BlackTeam = 2
 }
 
 public class GameUI : MonoBehaviour
@@ -79,7 +79,7 @@ public class GameUI : MonoBehaviour
 
     public void OnLeaveFromGameMenu()
     {
-        ChangeCamera(CameraAngle.menu);
+        ChangeCamera(CameraAngle.Menu);
         menuAnimator.SetTrigger("StartMenu");
     }
 
@@ -87,12 +87,12 @@ public class GameUI : MonoBehaviour
 
     private void RegisterEvents()
     {
-        NetUtility.C_START_GAME += OnStartGameClient;
+        NetUtility.CStartGame += OnStartGameClient;
     }
 
     private void UnRegisterEvents()
     {
-        NetUtility.C_START_GAME -= OnStartGameClient;
+        NetUtility.CStartGame -= OnStartGameClient;
     }
 
     private void OnStartGameClient(NetMessage obj)

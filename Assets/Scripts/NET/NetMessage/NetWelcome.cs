@@ -4,12 +4,12 @@ public class NetWelcome : NetMessage
 {
     public NetWelcome()
     {
-        Code = OpCode.WELCOME;
+        Code = OpCode.Welcome;
     }
 
     public NetWelcome(DataStreamReader reader)
     {
-        Code = OpCode.WELCOME;
+        Code = OpCode.Welcome;
         Deserialize(reader);
     }
 
@@ -28,11 +28,11 @@ public class NetWelcome : NetMessage
 
     public override void RecievedOnClient()
     {
-        NetUtility.C_WELCOME?.Invoke(this);
+        NetUtility.CWelcome?.Invoke(this);
     }
 
     public override void RecievedOnServer(NetworkConnection cnn)
     {
-        NetUtility.S_WELCOME?.Invoke(this, cnn);
+        NetUtility.SWelcome?.Invoke(this, cnn);
     }
 }
