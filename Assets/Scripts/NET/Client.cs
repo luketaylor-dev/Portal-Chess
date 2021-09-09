@@ -4,20 +4,20 @@ using UnityEngine;
 
 public class Client : MonoBehaviour
 {
-    private NetworkConnection connection;
+    private NetworkConnection _connection;
 
-    public Action connectionDropped;
+    public Action ConnectionDropped;
 
-    public NetworkDriver driver;
+    public NetworkDriver Driver;
 
-    private bool isActive;
+    private bool _isActive;
 
     public void Update()
     {
-        if (!isActive)
+        if (!_isActive)
             return;
 
-        driver.ScheduleUpdate().Complete();
+        Driver.ScheduleUpdate().Complete();
         CheckAlive();
         UpdateMessagePump();
     }
@@ -30,35 +30,35 @@ public class Client : MonoBehaviour
     //Methods
     public void Init(string ip, ushort port)
     {
-        driver = NetworkDriver.Create();
+        Driver = NetworkDriver.Create();
         var endpoint = NetworkEndPoint.Parse(ip, port);
 
-        connection = driver.Connect(endpoint);
+        _connection = Driver.Connect(endpoint);
 
         Debug.Log("Attemtping to connect to server on " + endpoint.Address);
 
-        isActive = true;
+        _isActive = true;
 
         RegisterToEvent();
     }
 
     public void Shutdown()
     {
-        if (isActive)
+        if (_isActive)
         {
             UnregisterToEvent();
-            driver.Dispose();
-            isActive = false;
-            connection = default;
+            Driver.Dispose();
+            _isActive = false;
+            _connection = default;
         }
     }
 
     private void CheckAlive()
     {
-        if (!connection.IsCreated && isActive)
+        if (!_connection.IsCreated && _isActive)
         {
             Debug.Log("Something went wrong, lost connection to server");
-            connectionDropped?.Invoke();
+            ConnectionDropped?.Invoke();
             Shutdown();
         }
     }
@@ -67,7 +67,7 @@ public class Client : MonoBehaviour
     {
         DataStreamReader stream;
         NetworkEvent.Type cmd;
-        while ((cmd = connection.PopEvent(driver, out stream)) != NetworkEvent.Type.Empty)
+        while ((cmd = _connection.PopEvent(Driver, out stream)) != NetworkEvent.Type.Empty)
         {
             if (cmd == NetworkEvent.Type.Connect)
             {
@@ -82,8 +82,8 @@ public class Client : MonoBehaviour
             else if (cmd == NetworkEvent.Type.Disconnect)
             {
                 Debug.Log("Client got disconnected from server");
-                connection = default;
-                connectionDropped?.Invoke();
+                _connection = default;
+                ConnectionDropped?.Invoke();
                 Shutdown();
             }
         }
@@ -92,19 +92,19 @@ public class Client : MonoBehaviour
     public void SendToServer(NetMessage msg)
     {
         DataStreamWriter writer;
-        driver.BeginSend(connection, out writer);
+        Driver.BeginSend(_connection, out writer);
         msg.Serialize(ref writer);
-        driver.EndSend(writer);
+        Driver.EndSend(writer);
     }
 
     private void RegisterToEvent()
     {
-        NetUtility.C_KEEP_ALIVE += OnKeepAlive;
+        NetUtility.CKeepAlive += OnKeepAlive;
     }
 
     private void UnregisterToEvent()
     {
-        NetUtility.C_KEEP_ALIVE -= OnKeepAlive;
+        NetUtility.CKeepAlive -= OnKeepAlive;
     }
 
     private void OnKeepAlive(NetMessage nm)

@@ -176,6 +176,6 @@ public class Pawn : ChessPiece
                     }
         }
 
-        return SpecialMove.none;
+        return SpecialMove.None;
     }
 }

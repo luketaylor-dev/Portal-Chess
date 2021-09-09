@@ -67,10 +67,7 @@ public class Rook : ChessPiece
                                             ChessPieceType
                                                 .Portal) //make sure we dont go through the portal repeatdly like infinite fall in portal
                                         {
-                                            if (board[x, newY].team != team)
-                                            {
-                                                r.Add(new Vector2Int(x, newY));
-                                            }
+                                            if (board[x, newY].team != team) r.Add(new Vector2Int(x, newY));
 
                                             goto LoopBreak;
                                         }

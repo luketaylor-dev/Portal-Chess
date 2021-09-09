@@ -4,12 +4,12 @@ public class NetKeepAlive : NetMessage
 {
     public NetKeepAlive() // make box
     {
-        Code = OpCode.KEEP_ALIVE;
+        Code = OpCode.KeepAlive;
     }
 
     public NetKeepAlive(DataStreamReader reader) // recieve box
     {
-        Code = OpCode.KEEP_ALIVE;
+        Code = OpCode.KeepAlive;
         Deserialize(reader);
     }
 
@@ -24,11 +24,11 @@ public class NetKeepAlive : NetMessage
 
     public override void RecievedOnClient()
     {
-        NetUtility.C_KEEP_ALIVE?.Invoke(this);
+        NetUtility.CKeepAlive?.Invoke(this);
     }
 
     public override void RecievedOnServer(NetworkConnection cnn)
     {
-        NetUtility.S_KEEP_ALIVE?.Invoke(this, cnn);
+        NetUtility.SKeepAlive?.Invoke(this, cnn);
     }
 }

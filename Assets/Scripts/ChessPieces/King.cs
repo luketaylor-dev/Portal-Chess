@@ -181,7 +181,7 @@ public class King : ChessPiece
     public override SpecialMove GetSpecialMoves(ref ChessPiece[,] board, ref List<Vector2Int[]> moveList,
         ref List<Vector2Int> availableMoves, int tileCountX, int tileCountY)
     {
-        var r = SpecialMove.none;
+        var r = SpecialMove.None;
 
         var kingMove = moveList.Find(m => m[0].x == 4 && m[0].y == (team == 0 ? 0 : 7));
         var leftRook = moveList.Find(m => m[0].x == 0 && m[0].y == (team == 0 ? 0 : 7));

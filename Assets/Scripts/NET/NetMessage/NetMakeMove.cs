@@ -2,49 +2,49 @@ using Unity.Networking.Transport;
 
 public class NetMakeMove : NetMessage
 {
-    public int destinationX;
-    public int destinationY;
-    public int originalX;
-    public int originalY;
-    public int teamId;
+    public int DestinationX;
+    public int DestinationY;
+    public int OriginalX;
+    public int OriginalY;
+    public int TeamId;
 
     public NetMakeMove() // make box
     {
-        Code = OpCode.MAKE_MOVE;
+        Code = OpCode.MakeMove;
     }
 
     public NetMakeMove(DataStreamReader reader) // recieve box
     {
-        Code = OpCode.MAKE_MOVE;
+        Code = OpCode.MakeMove;
         Deserialize(reader);
     }
 
     public override void Serialize(ref DataStreamWriter writer)
     {
         writer.WriteByte((byte) Code);
-        writer.WriteInt(originalX);
-        writer.WriteInt(originalY);
-        writer.WriteInt(destinationX);
-        writer.WriteInt(destinationY);
-        writer.WriteInt(teamId);
+        writer.WriteInt(OriginalX);
+        writer.WriteInt(OriginalY);
+        writer.WriteInt(DestinationX);
+        writer.WriteInt(DestinationY);
+        writer.WriteInt(TeamId);
     }
 
     public override void Deserialize(DataStreamReader reader)
     {
-        originalX = reader.ReadInt();
-        originalY = reader.ReadInt();
-        destinationX = reader.ReadInt();
-        destinationY = reader.ReadInt();
-        teamId = reader.ReadInt();
+        OriginalX = reader.ReadInt();
+        OriginalY = reader.ReadInt();
+        DestinationX = reader.ReadInt();
+        DestinationY = reader.ReadInt();
+        TeamId = reader.ReadInt();
     }
 
     public override void RecievedOnClient()
     {
-        NetUtility.C_MAKE_MOVE?.Invoke(this);
+        NetUtility.CMakeMove?.Invoke(this);
     }
 
     public override void RecievedOnServer(NetworkConnection cnn)
     {
-        NetUtility.S_MAKE_MOVE?.Invoke(this, cnn);
+        NetUtility.SMakeMove?.Invoke(this, cnn);
     }
 }
