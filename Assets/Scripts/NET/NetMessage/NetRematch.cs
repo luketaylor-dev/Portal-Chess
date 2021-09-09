@@ -2,40 +2,40 @@ using Unity.Networking.Transport;
 
 public class NetRematch : NetMessage
 {
-    public int teamId;
-    public byte wantRematch;
+    public int TeamId;
+    public byte WantRematch;
 
     public NetRematch() // make box
     {
-        Code = OpCode.REMATCH;
+        Code = OpCode.Rematch;
     }
 
     public NetRematch(DataStreamReader reader) // recieve box
     {
-        Code = OpCode.REMATCH;
+        Code = OpCode.Rematch;
         Deserialize(reader);
     }
 
     public override void Serialize(ref DataStreamWriter writer)
     {
         writer.WriteByte((byte) Code);
-        writer.WriteInt(teamId);
-        writer.WriteByte(wantRematch);
+        writer.WriteInt(TeamId);
+        writer.WriteByte(WantRematch);
     }
 
     public override void Deserialize(DataStreamReader reader)
     {
-        teamId = reader.ReadInt();
-        wantRematch = reader.ReadByte();
+        TeamId = reader.ReadInt();
+        WantRematch = reader.ReadByte();
     }
 
     public override void RecievedOnClient()
     {
-        NetUtility.C_REMATCH?.Invoke(this);
+        NetUtility.CRematch?.Invoke(this);
     }
 
     public override void RecievedOnServer(NetworkConnection cnn)
     {
-        NetUtility.S_REMATCH?.Invoke(this, cnn);
+        NetUtility.SRematch?.Invoke(this, cnn);
     }
 }
